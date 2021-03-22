@@ -10,28 +10,28 @@ questions = ["What is your age?",
              "Which sport do you spend most of your time participating in?",
              "Which feature is the most valuable to you?",
              "What important features are we missing?",
-             "What are you trying to solve by using our product?",
              "How easy is it to use our product?",
              "How likely are you to recommend this product to others?",
-             "How could we improve our product to better meet your needs?",
-             "What part of using our product was the most troublesome",
+             "What part of using our product was the most troublesome?",
              "If our product worked how you want, would you use it?"]
 
-featureList = ["Provides feedback on performance",
+featureList = ["Provides feedback on performance.",
                "Is very durable.",
                "Is programmable with different patterns, or even random patterns, to be used during training.",
-               "Easy to use.",
+               "Simplified UI.",
                "Analyses and gives vital information on which areas of the body need to be worked on.",
                "Provides on site data visualization and basic data interpretation.",
                "Can tell the difference between hard and soft punches.",
                ]
 
 missingFeatures = ["High level of precision.",
-                   "Good graphing ability",
-                   "A simple to use GUI/GUI is confusing",
-                   "Not battery powered",
-                   "Steep learning curve"]
+                   "Good graphing ability.",
+                   "A simple to use GUI/GUI is confusing.",
+                   "Steep learning curve."]
 
+troublesomeFeatures = ["Simplified UI obscures system functionality.",
+                       "System dashboard is too complicated to set up.",
+                       "Setup of hit pads is too complicated."]
 # This list is in order
 professions = ["Pharmaceuticals",
                "Prefer not to say",
@@ -125,9 +125,6 @@ def answerQuestion():
     mFeature = missingFeatures[rdBellCurveNum(len(missingFeatures))]
     data.append(mFeature)
 
-    # What are you trying to solve by using our product?
-    data.append("")
-
     # How easy is it to use our product?
     easeOfUse = -1
     while easeOfUse < 0 or easeOfUse > 5:
@@ -140,16 +137,16 @@ def answerQuestion():
         recommendation = int(np.random.normal(6, 2))
     data.append(recommendation)
 
-    # How could we improve our product to better meet your needs?
-    data.append("")
-
     # What part of using our product was the most troublesome
-    feature = featureList[rdBellCurveNum(len(featureList))]
+    feature = troublesomeFeatures[rdBellCurveNum(len(troublesomeFeatures))]
     data.append(feature)
 
     # If our product worked how you want, would you use it?
     wouldUse = boolList[rdBellCurveNum(len(boolList))]
     data.append(wouldUse)
+
+    print(len(data))
+    print(len(questions))
 
     assert len(data) == len(questions)
 
@@ -157,7 +154,7 @@ def answerQuestion():
 
 
 def main():
-    dataSamples = 134
+    dataSamples = 382
     producedData = []
     for i in range(dataSamples):
         producedData.append(answerQuestion())
