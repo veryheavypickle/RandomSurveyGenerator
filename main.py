@@ -145,9 +145,6 @@ def answerQuestion():
     wouldUse = boolList[rdBellCurveNum(len(boolList))]
     data.append(wouldUse)
 
-    print(len(data))
-    print(len(questions))
-
     assert len(data) == len(questions)
 
     return data
