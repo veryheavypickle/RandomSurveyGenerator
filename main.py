@@ -2,52 +2,28 @@ import pandas as pd
 import numpy as np
 import math
 
-# Lists that data is randomly picked from should be in order of most common answer in the middle
+willingnessToBuy = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-questions = ["What is your age?",
-             "What is your profession?",
-             "What is your gender?",
-             "Which sport do you spend most of your time participating in?",
-             "Which feature is the most valuable to you?",
-             "What important features are we missing?",
-             "How easy is it to use our product?",
-             "How likely are you to recommend this product to others?",
-             "What part of using our product was the most troublesome?",
-             "If our product worked how you want, would you use it?"]
+biasedBool = [True,
+              False,
+              False,
+              False,
+              False]
 
-featureList = ["Provides feedback on performance.",
-               "Is very durable.",
-               "Is programmable with different patterns, or even random patterns, to be used during training.",
-               "Simplified UI.",
-               "Analyses and gives vital information on which areas of the body need to be worked on.",
-               "Provides on site data visualization and basic data interpretation.",
-               "Can tell the difference between hard and soft punches.",
-               ]
+biasedBool2 = [True,
+               False,
+               False,
+               False]
 
-missingFeatures = ["High level of precision.",
-                   "Good graphing ability.",
-                   "A simple to use GUI/GUI is confusing.",
-                   "Steep learning curve."]
+genders = ["Non Binary",
+           "Male",
+           "Female",
+           "Female",
+           "Female",
+           "Male",
+           "Male",
+           "Prefer not to say"]
 
-troublesomeFeatures = ["Simplified UI obscures system functionality.",
-                       "System dashboard is too complicated to set up.",
-                       "Setup of hit pads is too complicated."]
-# This list is in order
-professions = ["Pharmaceuticals",
-               "Prefer not to say",
-               "Financial Analyst",
-               "Tutor",
-               "Delivery",
-               "Software Engineer/Developer",
-               "Student",
-               "Engineer",
-               "Teaching Assistant",
-               "Lab Technician",
-               "Marketing",
-               "None",
-               "Call Center"]
-
-# In order
 sports = ["Cricket",
           "Table Tennis",
           "Wrestling",
@@ -63,21 +39,29 @@ sports = ["Cricket",
           "Track",
           "Volleyball"]
 
-# in order
-genders = ["Non binary",
-           "Male",
-           "Male",
-           "Male",
-           "Female",
-           "Female",
-           "Female",
-           "Prefer not to say"]
+featureList = ["Provides feedback on performance",
+               "Is very durable.",
+               "Is programmable with different patterns, or even random patterns, to be used during training.",
+               "Easy to use.",
+               "Analyses and gives vital information on which areas of the body need to be worked on.",
+               "Provides on site data visualization and basic data interpretation.",
+               "Can tell the difference between hard and soft punches.",
+               ]
 
-# biased true false list
-boolList = [True,
-            True,
-            True,
-            False]
+missingFeatures = ["High level of precision.",
+                   "Good graphing ability",
+                   "A simple to use GUI/GUI is confusing",
+                   "Not battery powered",
+                   "Steep learning curve"]
+
+professions = ["Pharmaceuticals",
+               "Teachers Assistant",
+               "Delivery",
+               "Student",
+               "Student",
+               "Student",
+               "Software Engineer/Developer",
+               "Cashier"]
 
 
 def rdBellCurveNum(num):
@@ -100,50 +84,57 @@ def answerQuestion():
     uniqueAge = int(np.random.normal(5, 3)) + 15
     data.append(uniqueAge)
 
-    # What is your profession?
-    # produce random profession
-    # produces a random number between 0 and length of professions list
-    profession = professions[rdBellCurveNum(len(professions))]
-    data.append(profession)
-
     # What is your gender?
     # produce random gender
     gender = genders[rdBellCurveNum(len(genders))]
     data.append(gender)
 
-    # Which sport do you spend most of your time participating in?
-    # random sport
-    sport = sports[rdBellCurveNum(len(sports))]
-    data.append(sport)
+    # What is your profession?
+    profession = professions[rdBellCurveNum(len(professions))]
+    data.append(profession)
 
-    # Which feature is the most valuable to you?
-    # random important feature
+    # Are you currently participating in a sport professionally?
+    boolSports = biasedBool2[rdBellCurveNum(len(biasedBool2))]
+    data.append(boolSports)
+
+    # If so what sport would that be?
+    sport = sports[rdBellCurveNum(len(sports))]
+    # if the previous answer was yes, this gets an answer, else no answer
+    if data[3]:
+        data.append(sport)
+    else:
+        data.append("I don't play sport professionally")
+
+    # Do you think information is displayed in a easy to understand and useful way?
+    yesno = not biasedBool[rdBellCurveNum(len(biasedBool))]
+    data.append(yesno)
+
+    # Do you have any remarks for us about this?
+    data.append("No, i am bot, i can't think")
+
+    # Was the UI (User Interface) easy to understand?
+    yesno = not biasedBool[rdBellCurveNum(len(biasedBool))]
+    data.append(yesno)
+
+    # Do you have any further suggestions for the UI?
+    data.append("No, i am still bot, i still don't know what i am doing")
+
+    # What feature was most valuable to you?
     feature = featureList[rdBellCurveNum(len(featureList))]
     data.append(feature)
 
-    # What important features are we missing?
-    mFeature = missingFeatures[rdBellCurveNum(len(missingFeatures))]
-    data.append(mFeature)
+    # What is the most important feature to you we are missing?
+    missingFeature = missingFeatures[rdBellCurveNum(len(missingFeatures))]
+    data.append(missingFeature)
 
-    # How easy is it to use our product?
-    easeOfUse = -1
-    while easeOfUse < 0 or easeOfUse > 5:
-        easeOfUse = int(np.random.normal(4, 0.5))  # we want ease of use to be high
-    data.append(easeOfUse)
+    # Would you buy our product if it were to come out today?
+    yesno = biasedBool[rdBellCurveNum(len(biasedBool))]
+    data.append(yesno)
 
-    # How likely are you to recommend this product to others?
-    recommendation = -1
-    while recommendation < 0 or recommendation > 10:
-        recommendation = int(np.random.normal(6, 2))
-    data.append(recommendation)
-
-    # What part of using our product was the most troublesome
-    feature = troublesomeFeatures[rdBellCurveNum(len(troublesomeFeatures))]
-    data.append(feature)
-
-    # If our product worked how you want, would you use it?
-    wouldUse = boolList[rdBellCurveNum(len(boolList))]
-    data.append(wouldUse)
+    # Would you buy our product if in the future when there are more features?
+    yesnolist = [False, True, False, False]
+    yesno = yesnolist[rdBellCurveNum(len(yesnolist))]
+    data.append(yesno)
 
     assert len(data) == len(questions)
 
@@ -151,7 +142,7 @@ def answerQuestion():
 
 
 def main():
-    dataSamples = 382
+    dataSamples = 18
     producedData = []
     for i in range(dataSamples):
         producedData.append(answerQuestion())
@@ -159,5 +150,22 @@ def main():
     df = pd.DataFrame(columns=questions, data=producedData)  # create dataframe with questions as the columns
     df.to_csv("Output.csv")
 
+
+# Main
+# Lists that data is randomly picked from should be in order of most common answer in the middle
+
+questions = ["What is your age?",
+             "What is your gender?",
+             "What is your profession?",
+             "Are you currently participating in a sport professionally?",
+             "If so what sport would that be?",
+             "Do you think information is displayed in a easy to understand and useful way?",
+             "Do you have any remarks for us about this?",
+             "Was the UI (User Interface) easy to understand?",
+             "Do you have any further suggestions for the UI?",
+             "What feature was most valuable to you?",
+             "What is the most important feature to you we are missing?",
+             "Would you buy our product if it were to come out today?",
+             "Would you buy our product if in the future when there are more features?"]
 
 main()
